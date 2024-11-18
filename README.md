@@ -42,42 +42,104 @@ O sistema utiliza um arquivo de texto chamado `pacientes.txt` para carregar info
 
 3. O menu será exibido, e você poderá escolher a opção desejada (ver pacientes, ver salas, agendar consultas, etc.).
 
-### Como Usar no Code::Blocks
+---
+
+## Como Usar no Code::Blocks
+
+### Passos para Configuração
 
 1. **Baixe o Code::Blocks**: Se você ainda não tem o Code::Blocks instalado, pode baixá-lo [aqui](https://www.codeblocks.org/downloads/26).
 
 2. **Criar um novo projeto**:
-
    - Abra o Code::Blocks e crie um novo projeto.
    - Selecione "Console application" e a linguagem "C".
    - Escolha um nome para o projeto e onde salvar os arquivos.
 
 3. **Adicionar o código**:
-
    - No Code::Blocks, após criar o projeto, substitua o conteúdo do arquivo `main.c` com o código fonte do Sistema de Agendamento de Consultas Médicas.
 
 4. **Criar o arquivo de pacientes**:
-
    - Crie um arquivo de texto chamado `pacientes.txt` no mesmo diretório do seu projeto.
    - Preencha o arquivo com dados de exemplo conforme mostrado no exemplo do sistema.
 
 5. **Compilar e rodar**:
-
    - Para compilar o projeto, clique em "Build and Run" ou pressione `F9`.
    - O programa será compilado e executado no terminal do Code::Blocks, exibindo o menu interativo.
 
 6. **Interagir com o programa**:
-
    - O menu aparecerá no console, e você poderá escolher as opções interativas para cadastrar pacientes, agendar consultas e visualizar as informações.
+
+---
+
+## Como Usar no Visual Studio Code (VSCode)
+
+### Passos para Configuração
+
+1. **Instalar o Visual Studio Code**:
+   - Se ainda não tem o Visual Studio Code, baixe e instale [aqui](https://code.visualstudio.com/).
+
+2. **Instalar o compilador C (GCC)**:
+   - **No Windows**: Instale o **MinGW** para obter o GCC. Siga o tutorial [aqui](https://code.visualstudio.com/docs/cpp/config-mingw).
+   - **No Linux (Ubuntu/Debian)**: Execute o seguinte comando no terminal:
+     ```bash
+     sudo apt update
+     sudo apt install build-essential
+     ```
+   - **No macOS**: Instale o **Xcode Command Line Tools** com o comando:
+     ```bash
+     xcode-select --install
+     ```
+
+3. **Instalar as Extensões Necessárias no VSCode**:
+   - Abra o VSCode e vá para a aba de extensões (`Ctrl + Shift + X`).
+   - Instale as seguintes extensões:
+     - **C/C++**: Para suporte a compilação e depuração de programas C/C++.
+     - **Code Runner** (opcional): Para rodar programas diretamente do VSCode sem precisar de configurações adicionais.
+
+4. **Configurar o VSCode para Compilação e Execução**:
+   - No VSCode, abra a pasta do seu projeto.
+   - Selecione **Terminal** no menu superior e depois **New Terminal** para abrir o terminal integrado.
+   - Se você não tiver um arquivo `tasks.json`, crie um para automatizar a compilação e execução:
+
+     Vá para **Terminal > Configure Tasks > Create tasks.json from template > Others** e depois adicione a configuração abaixo no arquivo `tasks.json`:
+     ```json
+     {
+       "version": "2.0.0",
+       "tasks": [
+         {
+           "label": "build and run",
+           "type": "shell",
+           "command": "gcc",
+           "args": [
+             "-o",
+             "sistema_agendamento",
+             "sistema_agendamento.c",
+             "&&",
+             "./sistema_agendamento"
+           ],
+           "group": {
+             "kind": "build",
+             "isDefault": true
+           }
+         }
+       ]
+     }
+     ```
+
+5. **Compilar e Executar no VSCode**:
+   - Com o arquivo `tasks.json` configurado, pressione `Ctrl + Shift + B` para compilar e rodar o programa diretamente no VSCode. O terminal integrado exibirá o menu do sistema, e você poderá interagir com ele.
+
+### Compilar e Rodar Manualmente (sem `tasks.json`):
+- Caso prefira, você pode compilar e rodar o código manualmente no terminal integrado do VSCode com os seguintes comandos:
+  ```bash
+  gcc -o sistema_agendamento sistema_agendamento.c
+  ./sistema_agendamento
+  ```
+
+---
 
 ## Requisitos
 
-- Code::Blocks (ou outro ambiente de desenvolvimento C)
-- Compilador C (GCC, Clang, etc.)
-- Arquivo `pacientes.txt` (opcional, mas necessário para carregar os pacientes)
-
-## Mudanças para o Code::Blocks
-
-A principal alteração aqui é que, no Code::Blocks, você não precisa compilar manualmente como faria no terminal. Basta pressionar `F9` (ou clicar em "Build and Run") para compilar e rodar o código diretamente.
-
-O console dentro do Code::Blocks vai ser utilizado para exibir o menu e interagir com o programa. É onde o usuário poderá fazer as seleções interativas.
+- **Code::Blocks** ou **Visual Studio Code**
+- **Compilador C** (GCC, Clang, MinGW)
+- Sistema operacional: **Windows**, **Linux** ou **macOS**
