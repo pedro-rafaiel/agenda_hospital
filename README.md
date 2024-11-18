@@ -81,5 +81,3 @@ O sistema utiliza um arquivo de texto chamado `pacientes.txt` para carregar info
 A principal alteração aqui é que, no Code::Blocks, você não precisa compilar manualmente como faria no terminal. Basta pressionar `F9` (ou clicar em "Build and Run") para compilar e rodar o código diretamente.
 
 O console dentro do Code::Blocks vai ser utilizado para exibir o menu e interagir com o programa. É onde o usuário poderá fazer as seleções interativas.
-
-```
