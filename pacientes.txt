@@ -1,0 +1,10 @@
+DorNoPeito DorDeCabeca Joao Silva 45 12345678901 999999999 70.5 1.75
+Febre Cansaco Maria Oliveira 35 98765432100 988888888 65.0 1.68
+DorAbdominal Febre Lucas Pereira 25 11223344556 977777777 80.0 1.80
+Cansaco DorNoPeito Ana Costa 50 22334455667 966666666 72.0 1.60
+DorDeCabeca Cansaco Pedro Santos 40 33445566778 955555555 68.0 1.70
+DorAbdominal DorDeCabeca Rafael Souza 30 44556677889 944444444 78.0 1.77
+Febre DorNoPeito Paula Almeida 28 55667788990 933333333 63.5 1.65
+Cansaco DorDeCabeca Beatriz Lima 23 66778899001 922222222 55.0 1.60
+DorAbdominal Cansaco Thiago Rocha 38 77889900112 911111111 85.0 1.85
+Febre DorAbdominal Mariana Silva 32 88990011223 900000000 70.0 1.70
