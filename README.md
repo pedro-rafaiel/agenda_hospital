@@ -1,4 +1,3 @@
-```markdown
 # Sistema de Agendamento de Consultas Médicas
 
 Este é um sistema simples para agendamento de consultas médicas em um hospital. O sistema permite que o usuário visualize pacientes cadastrados, consulte salas de atendimento, agende horários e exiba horários agendados.
