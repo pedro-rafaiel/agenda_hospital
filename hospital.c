@@ -4,11 +4,12 @@
 #include <time.h>  // Para gerar numeros aleatorios
 
 #define MAX_NOME 100
-#define MAX_SINTOMAS 2
+#define MAX_SINTOMAS 1
 #define MAX_PACIENTES 100
-#define MAX_SALAS 5
-#define MAX_PACIENTES_POR_DIA 7  // Cada medico pode atender 7 pacientes por dia
-#define HORARIOS_FUNCIONAMENTO 9 // De 08:00h as 16:00h, temos 9 horarios
+#define MAX_SALAS 4
+#define MAX_PACIENTES_POR_DIA 8  // Cada medico pode atender 7 pacientes por dia
+#define HORARIOS_FUNCIONAMENTO 8 // De 08:00h as 16:00h, temos 9 horarios
+#define MAX_DIAS 30  // Máximo de dias para agendamento
 
 typedef enum {
     DOR_NO_PEITO,
@@ -55,9 +56,9 @@ typedef struct {
     int numero;
     Especialidade especialidade;
     char nome_medico[MAX_NOME];
-    Paciente pacientes_agendados[MAX_PACIENTES_POR_DIA];  // Pacientes agendados por medico
-    int pacientes_count;  // Quantos pacientes o medico ja agendou
-    int horarios_ocupados[HORARIOS_FUNCIONAMENTO];  // Marca os horarios ocupados
+    Paciente pacientes_agendados[MAX_DIAS][MAX_PACIENTES_POR_DIA];  // Pacientes agendados por dia
+    int pacientes_count[MAX_DIAS];  // Quantos pacientes por dia
+    int horarios_ocupados[MAX_DIAS][HORARIOS_FUNCIONAMENTO];  // Marca horários ocupados por dia
 } Sala;
 
 Sintoma converter_sintoma_para_enum(const char *sintoma_str) {
@@ -108,10 +109,10 @@ void cadastrar_pacientes_do_arquivo(const char *nome_arquivo, Paciente pacientes
         Paciente paciente;
         char sintoma1[MAX_NOME], sintoma2[MAX_NOME];
 
-        if (sscanf(linha, "%s %s %s %s %d %s %s %f %f",
-                   sintoma1, sintoma2, paciente.nome, paciente.sobrenome,
+        if (sscanf(linha, "%s %s %s %d %s %s %f %f",
+                   sintoma1, paciente.nome, paciente.sobrenome,
                    &paciente.idade, paciente.cpf, paciente.telefone,
-                   &paciente.peso, &paciente.altura) != 9) {
+                   &paciente.peso, &paciente.altura) != 8) {
             continue;
         }
 
@@ -120,8 +121,7 @@ void cadastrar_pacientes_do_arquivo(const char *nome_arquivo, Paciente pacientes
         }
 
         paciente.sintomas[0] = converter_sintoma_para_enum(sintoma1);
-        paciente.sintomas[1] = converter_sintoma_para_enum(sintoma2);
-        paciente.num_sintomas = 2;
+        paciente.num_sintomas = 1;
         paciente.especialidade_atendimento = determinar_especialidade(paciente.idade, paciente.sintomas[0]);
         paciente.prioridade = gerar_prioridade_aleatoria();
         paciente.agendado = 0;
@@ -133,7 +133,6 @@ void cadastrar_pacientes_do_arquivo(const char *nome_arquivo, Paciente pacientes
     fclose(arquivo);
     printf("Pacientes cadastrados com sucesso.\n");
 }
-
 
 void agendar_horarios(Sala salas[], int num_salas, Paciente pacientes[], int num_pacientes) {
     // Ordenar os pacientes pela prioridade (da mais alta para a mais baixa)
@@ -149,51 +148,71 @@ void agendar_horarios(Sala salas[], int num_salas, Paciente pacientes[], int num
 
     // Agendar os pacientes de acordo com a prioridade
     for (int i = 0; i < num_pacientes; i++) {
-        if (pacientes[i].agendado) continue; // Ignorar pacientes já agendados
+        if (pacientes[i].agendado) continue;  // Ignorar pacientes já agendados
 
         for (int j = 0; j < num_salas; j++) {
             if (salas[j].especialidade == pacientes[i].especialidade_atendimento) {
-                if (salas[j].pacientes_count < MAX_PACIENTES_POR_DIA) {
-                    for (int h = 0; h < HORARIOS_FUNCIONAMENTO; h++) {
-                        if (salas[j].horarios_ocupados[h] == 0) {
-                            // Agendar o paciente
-                            salas[j].pacientes_agendados[salas[j].pacientes_count] = pacientes[i];
-                            salas[j].pacientes_agendados[salas[j].pacientes_count].horario_agendado = h;
-                            salas[j].pacientes_count++;
-                            salas[j].horarios_ocupados[h] = 1;
+                for (int d = 0; d < MAX_DIAS; d++) {  // Iterar pelos dias
+                    if (salas[j].pacientes_count[d] < MAX_PACIENTES_POR_DIA) {
+                        for (int h = 0; h < HORARIOS_FUNCIONAMENTO; h++) {
+                            if (salas[j].horarios_ocupados[d][h] == 0) {
+                                // Agendar o paciente
+                                salas[j].pacientes_agendados[d][salas[j].pacientes_count[d]] = pacientes[i];
+                                salas[j].pacientes_agendados[d][salas[j].pacientes_count[d]].horario_agendado = h;
+                                salas[j].pacientes_agendados[d][salas[j].pacientes_count[d]].dia_agendado = d + 1;  // Dia começa em 1
+                                salas[j].pacientes_count[d]++;
+                                salas[j].horarios_ocupados[d][h] = 1;
 
-                            pacientes[i].agendado = 1;
-                            pacientes[i].horario_agendado = h;
-                            pacientes[i].dia_agendado = 0; // Primeiro dia
+                                pacientes[i].agendado = 1;
+                                pacientes[i].horario_agendado = h;
+                                pacientes[i].dia_agendado = d + 1;
 
-                            break;
+                                goto PROXIMO_PACIENTE;  // Prosseguir para o próximo paciente
+                            }
                         }
                     }
                 }
             }
         }
+    PROXIMO_PACIENTE:;
     }
 }
 
-void exibir_horarios_agendados(Sala salas[], int num_salas) {
-    for (int i = 0; i < num_salas; i++) {
-        printf("Horarios agendados para a sala %d (Medico: %s):\n", salas[i].numero, salas[i].nome_medico);
-        for (int j = 0; j < salas[i].pacientes_count; j++) {
-            Paciente p = salas[i].pacientes_agendados[j];
-            printf("    %d:00h - %s %s (Prioridade: ", 8 + p.horario_agendado, p.nome, p.sobrenome);
-
-            // Exibir a prioridade
-            switch (p.prioridade) {
-                case BAIXA: printf("Baixa"); break;
-                case MEDIA: printf("Media"); break;
-                case ALTA: printf("Alta"); break;
-                case MUITO_ALTA: printf("Muito Alta"); break;
-                case CRITICA: printf("Critica"); break;
-            }
-            printf(")\n");
-        }
-        printf("\n");
+void exibir_horarios_agendados(Sala salas[], int num_salas, const char *nome_arquivo, const char *titulo) {
+    FILE *arquivo = fopen(nome_arquivo, "a"); // Abrir em modo de append para não sobrescrever o arquivo
+    if (arquivo == NULL) {
+        perror("Erro ao criar o arquivo de horários");
+        return;
     }
+
+    fprintf(arquivo, "%s\n\n", titulo);
+
+    for (int i = 0; i < num_salas; i++) {
+        fprintf(arquivo, "Horários agendados para a sala %d (Médico: %s):\n", salas[i].numero, salas[i].nome_medico);
+
+        for (int d = 0; d < MAX_DIAS; d++) {
+            if (salas[i].pacientes_count[d] == 0) continue;  // Pular dias sem pacientes
+
+            fprintf(arquivo, "  Dia %d:\n", d + 1);
+            for (int j = 0; j < salas[i].pacientes_count[d]; j++) {
+                Paciente p = salas[i].pacientes_agendados[d][j];
+                fprintf(arquivo, "    %d:00h - %s %s (Prioridade: ", 8 + p.horario_agendado, p.nome, p.sobrenome);
+
+                // Exibir a prioridade
+                switch (p.prioridade) {
+                    case BAIXA: fprintf(arquivo, "Baixa"); break;
+                    case MEDIA: fprintf(arquivo, "Média"); break;
+                    case ALTA: fprintf(arquivo, "Alta"); break;
+                    case MUITO_ALTA: fprintf(arquivo, "Muito Alta"); break;
+                    case CRITICA: fprintf(arquivo, "Crítica"); break;
+                }
+                fprintf(arquivo, ")\n");
+            }
+        }
+        fprintf(arquivo, "\n");
+    }
+
+    fclose(arquivo);
 }
 
 void exibir_dados_pacientes(Paciente pacientes[], int num_pacientes) {
@@ -223,6 +242,54 @@ void exibir_dados_pacientes(Paciente pacientes[], int num_pacientes) {
     }
 }
 
+void simular(Sala salas[], int num_salas, Paciente pacientes[], int num_pacientes) {
+    int pacientes_cadastrados = 0;
+    int horarios_agendados = 0;
+
+    // Verificar se há pacientes cadastrados
+    for (int i = 0; i < num_pacientes; i++) {
+        if (strlen(pacientes[i].cpf) > 0) {
+            pacientes_cadastrados++;
+        }
+    }
+
+    if (pacientes_cadastrados == 0) {
+        printf("Nenhum paciente cadastrado. Por favor, cadastre os pacientes antes de simular.\n");
+        return;
+    }
+
+    // Verificar se há horários agendados
+    for (int i = 0; i < num_pacientes; i++) {
+        if (pacientes[i].agendado == 1) {
+            horarios_agendados++;
+        }
+    }
+
+    if (horarios_agendados == 0) {
+        printf("Nenhum paciente agendado. Por favor, agende os horários antes de simular.\n");
+        return;
+    }
+
+    printf("Simulação iniciada com sucesso!\n");
+
+    srand(time(NULL));  // Inicializar gerador de números aleatórios
+
+    for (int i = 0; i < num_pacientes; i++) {
+        if (pacientes[i].agendado == 1) {
+            // Simular faltas e retornos
+            if (rand() % 100 < 5) {  // 5% de chance de faltar
+                // Reduzir prioridade, etc.
+            }
+            if (rand() % 100 < 10) {  // 10% de chance de retorno
+                // Atualizar horário e prioridade, etc.
+            }
+        }
+    }
+
+    // Gerar tabela atualizada de horários
+    exibir_horarios_agendados(salas, num_salas, "horarios_simulacao.txt", "Horários após a simulação");
+}
+
 void menu() {
     Paciente pacientes[MAX_PACIENTES];
     Sala salas[MAX_SALAS] = {
@@ -242,7 +309,8 @@ void menu() {
         printf("4. Cadastrar pacientes do arquivo\n");
         printf("5. Agendar horarios\n");
         printf("6. Exibir horarios agendados\n");
-        printf("7. Sair\n");
+        printf("7. Simular atendimento\n");
+        printf("8. Sair\n");
         printf(": ");
         scanf("%d", &opcao);
 
@@ -272,19 +340,21 @@ void menu() {
                 agendar_horarios(salas, MAX_SALAS, pacientes, num_pacientes);
                 break;
             case 6:
-                exibir_horarios_agendados(salas, MAX_SALAS);
+                exibir_horarios_agendados(salas, MAX_SALAS, "horarios_simulacao.txt", "Horários antes da simulação");
                 break;
             case 7:
+                simular(salas, MAX_SALAS, pacientes, num_pacientes);
+                break;
+            case 8:
                 printf("Saindo...\n");
                 return;
             default:
-                printf("Opcao invalida!\n");
+                printf("Opcao invalida. Tente novamente.\n");
         }
     }
 }
 
 int main() {
-    srand(time(NULL));
     menu();
     return 0;
 }
