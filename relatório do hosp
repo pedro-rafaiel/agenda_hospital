@@ -1,0 +1,133 @@
+Número de semanas necessárias: 4
+
+Ocupação das salas:
+Semana 1:
+ Sala 1:
+  Horário 1: Paciente: Felipe Farias (Prioridade: Crítico), Médico: Dr. Vinicius
+  Horário 2: Paciente: Daniel Bastos (Prioridade: Crítico), Médico: Dr. Carlos
+  Horário 3: Paciente: Ana Costa (Prioridade: Crítico), Médico: Dr. Pedro
+   -> Paciente faltou: Ana Costa
+   -> Substituído por: Bianca Torres
+  Horário 4: Paciente: Lucas Almeida (Prioridade: Crítico), Médico: Dr. Vinera
+  Horário 5: Paciente: Leonardo Souza (Prioridade: Crítico), Médico: Dr. Vinicius
+  Horário 6: Paciente: Thiago Pereira (Prioridade: Crítico), Médico: Dr. Carlos
+  Horário 7: Paciente: Julia Santos (Prioridade: Crítico), Médico: Dr. Pedro
+  Horário 8: Paciente: Gustavo Tavares (Prioridade: Crítico), Médico: Dr. Vinera
+ Sala 2:
+  Horário 1: Paciente: João Farias (Prioridade: Crítico), Médico: Dr. Vinicius
+  Horário 2: Paciente: Beatriz Souza (Prioridade: Crítico), Médico: Dr. Carlos
+  Horário 3: Paciente: Fernanda Macedo (Prioridade: Crítico), Médico: Dr. Pedro
+  Horário 4: Paciente: Alice Gomes (Prioridade: Crítico), Médico: Dr. Vinera
+  Horário 5: Paciente: Eduardo Souza (Prioridade: Crítico), Médico: Dr. Vinicius
+  Horário 6: Paciente: Isabel Martins (Prioridade: Crítico), Médico: Dr. Carlos
+  Horário 7: Paciente: Rafael Martins (Prioridade: Muito Alta), Médico: Dr. Pedro
+  Horário 8: Paciente: Clara Ribeiro (Prioridade: Muito Alta), Médico: Dr. Vinera
+ Sala 3:
+  Horário 1: Paciente: Tiago Monteiro (Prioridade: Muito Alta), Médico: Dr. Vinicius
+  Horário 2: Paciente: Gustavo Nascimento (Prioridade: Muito Alta), Médico: Dr. Carlos
+  Horário 3: Paciente: Bruno Lopes (Prioridade: Muito Alta), Médico: Dr. Pedro
+  Horário 4: Paciente: Ricardo Costa (Prioridade: Muito Alta), Médico: Dr. Vinera
+  Horário 5: Paciente: Luiz Tavares (Prioridade: Muito Alta), Médico: Dr. Vinicius
+  Horário 6: Paciente: Bruno Ferreira (Prioridade: Muito Alta), Médico: Dr. Carlos
+  Horário 7: Paciente: Clara Ribeiro (Prioridade: Muito Alta), Médico: Dr. Pedro
+  Horário 8: Paciente: Daniel Monteiro (Prioridade: Muito Alta), Médico: Dr. Vinera
+ Sala 4:
+  Horário 1: Paciente: Matheus Rodrigues (Prioridade: Muito Alta), Médico: Dr. Vinicius
+  Horário 2: Paciente: Hugo Freitas (Prioridade: Muito Alta), Médico: Dr. Carlos
+  Horário 3: Paciente: Beatriz Lima (Prioridade: Muito Alta), Médico: Dr. Pedro
+  Horário 4: Paciente: Marina Mendes (Prioridade: Muito Alta), Médico: Dr. Vinera
+  Horário 5: Paciente: Pedro Santos (Prioridade: Muito Alta), Médico: Dr. Vinicius
+  Horário 6: Paciente: Maria Oliveira (Prioridade: Muito Alta), Médico: Dr. Carlos
+  Horário 7: Paciente: Renato Ribeiro (Prioridade: Muito Alta), Médico: Dr. Pedro
+  Horário 8: Paciente: Rodrigo Souza (Prioridade: Muito Alta), Médico: Dr. Vinera
+
+Semana 2:
+ Sala 1:
+  Horário 2: Paciente: Rafael Souza (Prioridade: Alta), Médico: Dr. Carlos
+  Horário 3: Paciente: Thiago Rocha (Prioridade: Alta), Médico: Dr. Pedro
+  Horário 4: Paciente: Sara Carvalho (Prioridade: Alta), Médico: Dr. Vinera
+  Horário 5: Paciente: Pedro Nogueira (Prioridade: Alta), Médico: Dr. Vinicius
+  Horário 6: Paciente: Mariana Ramos (Prioridade: Alta), Médico: Dr. Carlos
+  Horário 7: Paciente: Gustavo Nogueira (Prioridade: Alta), Médico: Dr. Pedro
+  Horário 8: Paciente: Helena Costa (Prioridade: Alta), Médico: Dr. Vinera
+ Sala 2:
+  Horário 1: Paciente: Henrique Martins (Prioridade: Alta), Médico: Dr. Vinicius
+  Horário 2: Paciente: Bianca Silva (Prioridade: Alta), Médico: Dr. Carlos
+  Horário 3: Paciente: Renata Gomes (Prioridade: Alta), Médico: Dr. Pedro
+  Horário 4: Paciente: Fernanda Lima (Prioridade: Alta), Médico: Dr. Vinera
+  Horário 5: Paciente: Mariana Almeida (Prioridade: Alta), Médico: Dr. Vinicius
+  Horário 6: Paciente: Fernanda Melo (Prioridade: Alta), Médico: Dr. Carlos
+  Horário 7: Paciente: Rafaela Silva (Prioridade: Média), Médico: Dr. Pedro
+  Horário 8: Paciente: Luana Melo (Prioridade: Média), Médico: Dr. Vinera
+   -> Paciente faltou: Luana Melo
+   -> Substituído por: Alice Nascimento
+ Sala 3:
+  Horário 1: Paciente: Caio Freitas (Prioridade: Média), Médico: Dr. Vinicius
+  Horário 2: Paciente: Helena Carvalho (Prioridade: Média), Médico: Dr. Carlos
+  Horário 3: Paciente: Letícia Almeida (Prioridade: Média), Médico: Dr. Pedro
+  Horário 4: Paciente: Rodrigo Pereira (Prioridade: Média), Médico: Dr. Vinera
+  Horário 5: Paciente: Fernanda Farias (Prioridade: Média), Médico: Dr. Vinicius
+  Horário 6: Paciente: Eduardo Lopes (Prioridade: Média), Médico: Dr. Carlos
+  Horário 7: Paciente: Bruna Monteiro (Prioridade: Média), Médico: Dr. Pedro
+  Horário 8: Paciente: Marina Costa (Prioridade: Média), Médico: Dr. Vinera
+ Sala 4:
+  Horário 1: Paciente: João Mendes (Prioridade: Média), Médico: Dr. Vinicius
+  Horário 2: Paciente: Juliana Mendes (Prioridade: Média), Médico: Dr. Carlos
+  Horário 3: Paciente: Gabriela Oliveira (Prioridade: Média), Médico: Dr. Pedro
+  Horário 4: Paciente: Eduardo Souza (Prioridade: Crítico), Médico: Dr. Vinera
+   -> Paciente faltou: Eduardo Souza
+   -> Substituído por: João Andrade
+  Horário 5: Paciente: Vanessa Duarte (Prioridade: Média), Médico: Dr. Vinicius
+  Horário 6: Paciente: Renata Oliveira (Prioridade: Média), Médico: Dr. Carlos
+  Horário 7: Paciente: Rafael Ramos (Prioridade: Média), Médico: Dr. Pedro
+  Horário 8: Paciente: Camila Fernandes (Prioridade: Média), Médico: Dr. Vinera
+
+Semana 3:
+ Sala 1:
+  Horário 3: Paciente: Camila Rodrigues (Prioridade: Média), Médico: Dr. Pedro
+  Horário 4: Paciente: Daniel Santos (Prioridade: Média), Médico: Dr. Vinera
+  Horário 5: Paciente: Paulo Mendonça (Prioridade: Média), Médico: Dr. Vinicius
+  Horário 6: Paciente: Carolina Bastos (Prioridade: Média), Médico: Dr. Carlos
+  Horário 7: Paciente: Diego Nascimento (Prioridade: Baixa), Médico: Dr. Pedro
+  Horário 8: Paciente: Felipe Duarte (Prioridade: Baixa), Médico: Dr. Vinera
+ Sala 2:
+  Horário 1: Paciente: Tiago Silva (Prioridade: Baixa), Médico: Dr. Vinicius
+  Horário 2: Paciente: Paula Almeida (Prioridade: Baixa), Médico: Dr. Carlos
+  Horário 3: Paciente: Ricardo Oliveira (Prioridade: Baixa), Médico: Dr. Pedro
+  Horário 4: Paciente: Lucas Pereira (Prioridade: Baixa), Médico: Dr. Vinera
+  Horário 5: Paciente: Lucas Carvalho (Prioridade: Baixa), Médico: Dr. Vinicius
+  Horário 6: Paciente: Vanessa Martins (Prioridade: Baixa), Médico: Dr. Carlos
+  Horário 7: Paciente: Gabriel Rocha (Prioridade: Baixa), Médico: Dr. Pedro
+  Horário 8: Paciente: Letícia Vieira (Prioridade: Baixa), Médico: Dr. Vinera
+ Sala 3:
+  Horário 1: Paciente: André Costa (Prioridade: Baixa), Médico: Dr. Vinicius
+  Horário 2: Paciente: Renata Santos (Prioridade: Baixa), Médico: Dr. Carlos
+  Horário 3: Paciente: Ana Nascimento (Prioridade: Baixa), Médico: Dr. Pedro
+  Horário 4: Paciente: Ana Clara (Prioridade: Baixa), Médico: Dr. Vinera
+  Horário 5: Paciente: Henrique Costa (Prioridade: Baixa), Médico: Dr. Vinicius
+  Horário 6: Paciente: Alice Carvalho (Prioridade: Baixa), Médico: Dr. Carlos
+  Horário 7: Paciente: Hugo Lopes (Prioridade: Baixa), Médico: Dr. Pedro
+  Horário 8: Paciente: André Vieira (Prioridade: Muito Baixa), Médico: Dr. Vinera
+ Sala 4:
+  Horário 1: Paciente: Vanessa Almeida (Prioridade: Muito Baixa), Médico: Dr. Vinicius
+  Horário 2: Paciente: Felipe Carvalho (Prioridade: Muito Baixa), Médico: Dr. Carlos
+  Horário 3: Paciente: Felipe Torres (Prioridade: Muito Baixa), Médico: Dr. Pedro
+  Horário 4: Paciente: Thiago Moraes (Prioridade: Muito Baixa), Médico: Dr. Vinera
+  Horário 5: Paciente: Amanda Lima (Prioridade: Muito Baixa), Médico: Dr. Vinicius
+  Horário 6: Paciente: Carolina Andrade (Prioridade: Muito Baixa), Médico: Dr. Carlos
+  Horário 7: Paciente: Rafael Duarte (Prioridade: Muito Baixa), Médico: Dr. Pedro
+  Horário 8: Paciente: Bruna Andrade (Prioridade: Muito Baixa), Médico: Dr. Vinera
+
+Semana 4:
+ Sala 1:
+  Horário 1: Paciente: Lara Rodrigues (Prioridade: Muito Baixa), Médico: Dr. Vinicius
+  Horário 2: Paciente: Mariana Silva (Prioridade: Muito Baixa), Médico: Dr. Carlos
+ Sala 2:
+ Sala 3:
+ Sala 4:
+
+Relatório de horas trabalhadas por médico:
+ Médico: Dr. Vinicius, Horas Trabalhadas: 25
+ Médico: Dr. Carlos, Horas Trabalhadas: 25
+ Médico: Dr. Pedro, Horas Trabalhadas: 24
+ Médico: Dr. Vinera, Horas Trabalhadas: 24
