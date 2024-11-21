@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #define MAX_PACIENTES 100
 #define MAX_SALAS 4
@@ -12,6 +13,8 @@
 #define MAX_TELEFONE 15
 #define MAX_CPF 12
 
+typedef enum { CRITICO, MUITO_ALTA, ALTA, MEDIA, BAIXA, MUITO_BAIXA } Prioridade;
+
 typedef struct {
     char sintoma[MAX_SINTOMA];
     char nome[MAX_NOME];
@@ -21,6 +24,7 @@ typedef struct {
     char telefone[MAX_TELEFONE];
     float peso;
     float altura;
+    Prioridade prioridade;
 } Paciente;
 
 typedef struct {
@@ -36,6 +40,18 @@ typedef struct {
 typedef struct {
     Horario horarios[MAX_HORARIOS];
 } Sala;
+
+const char *prioridadeParaString(Prioridade prioridade) {
+    switch (prioridade) {
+        case CRITICO: return "Crítico";
+        case MUITO_ALTA: return "Muito Alta";
+        case ALTA: return "Alta";
+        case MEDIA: return "Média";
+        case BAIXA: return "Baixa";
+        case MUITO_BAIXA: return "Muito Baixa";
+        default: return "Desconhecida";
+    }
+}
 
 void carregarPacientes(Paciente pacientes[], int *num_pacientes) {
     FILE *arquivo = fopen("pacientes.txt", "r");
@@ -54,6 +70,8 @@ void carregarPacientes(Paciente pacientes[], int *num_pacientes) {
                   pacientes[*num_pacientes].telefone,
                   &pacientes[*num_pacientes].peso,
                   &pacientes[*num_pacientes].altura) == 8) {
+        // Atribuindo uma prioridade aleatória a cada paciente
+        pacientes[*num_pacientes].prioridade = rand() % 6;
         (*num_pacientes)++;
     }
 
@@ -69,10 +87,19 @@ void inicializarMedicos(Medico medicos[], int *num_medicos) {
     }
 }
 
+int compararPrioridade(const void *a, const void *b) {
+    Paciente *pacienteA = (Paciente *)a;
+    Paciente *pacienteB = (Paciente *)b;
+    return pacienteA->prioridade - pacienteB->prioridade;
+}
+
 void alocarConsultas(Paciente pacientes[], int num_pacientes, Medico medicos[], int num_medicos, Sala salas[][MAX_SALAS], int *num_semanas) {
     int pacientes_atendidos = 0;
     *num_semanas = 0;
     int medico_atual = 0;
+
+    // Ordena os pacientes com base na sua prioridade
+    qsort(pacientes, num_pacientes, sizeof(Paciente), compararPrioridade);
 
     while (pacientes_atendidos < num_pacientes) {
         for (int sala = 0; sala < MAX_SALAS; sala++) {
@@ -95,8 +122,29 @@ void alocarConsultas(Paciente pacientes[], int num_pacientes, Medico medicos[], 
         (*num_semanas)++;
     }
 }
+void gerenciarFaltas(Paciente pacientes[], int *num_pacientes, Sala salas[][MAX_SALAS], int semana, int sala, int hora, char *faltou, char *substituto) {
+    strcpy(faltou, "");
+    strcpy(substituto, "");
 
-void gerarRelatorio(Medico medicos[], int num_medicos, Sala salas[][MAX_SALAS], int num_semanas) {
+    // Simular a falta com 5% de probabilidade
+    if (rand() % 100 < 5) {
+        strcpy(faltou, salas[semana][sala].horarios[hora].paciente);
+
+        // Substituir pelo primeiro paciente do dia seguinte, se disponível
+        for (int prox_sala = 0; prox_sala < MAX_SALAS; prox_sala++) {
+            for (int prox_hora = 0; prox_hora < MAX_HORARIOS; prox_hora++) {
+                if (semana + 1 < MAX_SEMANAS && salas[semana + 1][prox_sala].horarios[prox_hora].paciente[0] != '\0') {
+                    strcpy(substituto, salas[semana + 1][prox_sala].horarios[prox_hora].paciente);
+                    strcpy(salas[semana][sala].horarios[hora].paciente, substituto);
+                    salas[semana + 1][prox_sala].horarios[prox_hora].paciente[0] = '\0';
+                    return;
+                }
+            }
+        }
+    }
+}
+
+void gerarRelatorio(Paciente pacientes[], Medico medicos[], int num_medicos, Sala salas[][MAX_SALAS], int num_semanas, int num_pacientes) {
     FILE *arquivo = fopen("resultado_simulacao.txt", "w");
     if (!arquivo) {
         printf("Erro ao criar o arquivo de resultado.\n");
@@ -112,10 +160,39 @@ void gerarRelatorio(Medico medicos[], int num_medicos, Sala salas[][MAX_SALAS], 
             fprintf(arquivo, " Sala %d:\n", sala + 1);
             for (int hora = 0; hora < MAX_HORARIOS; hora++) {
                 if (salas[semana][sala].horarios[hora].paciente[0] != '\0') {
-                    fprintf(arquivo, "  Horário %d: Paciente: %s, Médico: %s\n",
+                    char faltou[MAX_NOME * 2], substituto[MAX_NOME * 2];
+                    char paciente_atual[MAX_NOME * 2];
+                    strcpy(paciente_atual, salas[semana][sala].horarios[hora].paciente);
+
+                    // Verificar faltas
+                    gerenciarFaltas(pacientes, &num_pacientes, salas, semana, sala, hora, faltou, substituto);
+
+                    // Localizar prioridade do paciente
+                    Prioridade prioridade_paciente = MEDIA;
+                    for (int i = 0; i < num_pacientes; i++) {
+                        char nome_completo[MAX_NOME * 2];
+                        snprintf(nome_completo, sizeof(nome_completo), "%s %s",
+                                 pacientes[i].nome, pacientes[i].sobrenome);
+                        if (strcmp(nome_completo, paciente_atual) == 0) {
+                            prioridade_paciente = pacientes[i].prioridade;
+                            break;
+                        }
+                    }
+
+                    fprintf(arquivo, "  Horário %d: Paciente: %s (Prioridade: %s), Médico: %s\n",
                             hora + 1,
-                            salas[semana][sala].horarios[hora].paciente,
+                            paciente_atual,
+                            prioridadeParaString(prioridade_paciente),
                             salas[semana][sala].horarios[hora].medico);
+
+                    if (strlen(faltou) > 0) {
+                        fprintf(arquivo, "   -> Paciente faltou: %s\n", faltou);
+                        if (strlen(substituto) > 0) {
+                            fprintf(arquivo, "   -> Substituído por: %s\n", substituto);
+                        } else {
+                            fprintf(arquivo, "   -> Sem substituição disponível.\n");
+                        }
+                    }
                 }
             }
         }
@@ -139,10 +216,12 @@ int main() {
     Sala salas[MAX_SEMANAS][MAX_SALAS];
     int num_pacientes, num_medicos, num_semanas;
 
+    srand(time(NULL)); // Inicializa o gerador de números aleatórios
+
     carregarPacientes(pacientes, &num_pacientes);
     inicializarMedicos(medicos, &num_medicos);
     alocarConsultas(pacientes, num_pacientes, medicos, num_medicos, salas, &num_semanas);
-    gerarRelatorio(medicos, num_medicos, salas, num_semanas);
+    gerarRelatorio(pacientes, medicos, num_medicos, salas, num_semanas, num_pacientes);
 
     return 0;
 }
