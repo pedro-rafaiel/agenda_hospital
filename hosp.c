@@ -98,6 +98,7 @@ void inicializarBancoReservas(Paciente pacientes[], int num_pacientes) {
         bancoReservas[i] = pacientes[num_pacientes - TAM_BANCO + i].id;
     }
 }
+
 void exibirBancoReservas(Paciente pacientes[], int num_pacientes) {
     printf("\nBanco de Reservas:\n");
     for (int i = 0; i < TAM_BANCO; i++) {
@@ -140,12 +141,12 @@ void alocarConsultas(Paciente pacientes[], int *num_pacientes, Medico medicos[],
     int pacientes_atendidos = 0;
     *num_semanas = 0;
 
-    qsort(pacientes, *num_pacientes, sizeof(Paciente), compararPrioridade);
+    qsort(pacientes, *num_pacientes - TAM_BANCO, sizeof(Paciente), compararPrioridade); // Exclui os reservados
 
-    while (pacientes_atendidos < *num_pacientes) {
+    while (pacientes_atendidos < *num_pacientes - TAM_BANCO) { // Evita usar os reservados
         for (int sala = 0; sala < MAX_SALAS; sala++) {
             for (int hora = 0; hora < MAX_HORARIOS; hora++) {
-                if (pacientes_atendidos >= *num_pacientes) break;
+                if (pacientes_atendidos >= *num_pacientes - TAM_BANCO) break;
 
                 // Selecionar um médico disponível
                 int medico_encontrado = -1;
