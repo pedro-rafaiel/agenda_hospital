@@ -67,11 +67,11 @@ Este programa em C simula o agendamento e gerenciamento de consultas médicas. E
    - Abra o terminal integrado (**Ctrl + `**).
    - Compile o código com:
      ```
-     gcc main.c -o simulador
+     gcc main.c -o simulador_hospital
      ```
    - Execute com:
      ```
-     ./simulador
+     ./simulador_hospital
      ```
 
 ---
