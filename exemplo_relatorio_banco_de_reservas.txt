@@ -1,0 +1,10 @@
+Dia 1, Sala 2, Horário 3: Paciente 'Amanda Lima' faltou.
+Substituído por: Bianca Torres do banco de reservas.
+Dia 1, Sala 2, Horário 5: Paciente 'Ricardo Costa' faltou.
+Substituído por: Daniel Bastos do banco de reservas.
+Dia 2, Sala 2, Horário 8: Paciente 'Lucas Pereira' faltou.
+Substituído por: Lucas Carvalho do banco de reservas.
+Dia 2, Sala 3, Horário 1: Paciente 'Marina Costa' faltou.
+Substituído por: Fernanda Farias do banco de reservas.
+Dia 3, Sala 1, Horário 2: Paciente 'Camila Rodrigues' faltou.
+Substituído por: Rodrigo Souza do banco de reservas.
