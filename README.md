@@ -96,6 +96,6 @@ Este programa em C simula o agendamento e gerenciamento de consultas médicas. E
 ---
 
 ## **Autor**
-Este projeto é uma simulação educacional para gerenciamento de consultas em clínicas médicas.
-Feito como trabalho prático para a cadeira de Algoritmos e Estruturas de Dados II, Professor:Carlos Vinícius, Semestre 2024.1
-Feito pelos alunos Pedro Rafael Pereira de Oliveira e Vinícius Inácio dos Santos
+- Este projeto é uma simulação educacional para gerenciamento de consultas em clínicas médicas.
+- Feito como trabalho prático para a cadeira de Algoritmos e Estruturas de Dados II, Professor: Carlos Vinícius, Semestre 2024.1, UFCA.
+- Feito pelos alunos Pedro Rafael Pereira de Oliveira e Vinícius Inácio dos Santos.
