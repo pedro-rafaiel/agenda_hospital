@@ -6,7 +6,7 @@
 #define MAX_PACIENTES 100
 #define MAX_SALAS 4
 #define MAX_HORARIOS 8
-#define MAX_SEMANAS 20
+#define MAX_DIAS 20
 #define MAX_NOME 50
 #define MAX_SINTOMA 20
 #define MAX_TELEFONE 15
@@ -137,9 +137,9 @@ int encontrarPacientePorId(Paciente pacientes[], int num_pacientes, int id) {
     return -1;
 }
 
-void alocarConsultas(Paciente pacientes[], int *num_pacientes, Medico medicos[], int num_medicos, Sala salas[][MAX_SALAS], int *num_semanas) {
+void alocarConsultas(Paciente pacientes[], int *num_pacientes, Medico medicos[], int num_medicos, Sala salas[][MAX_SALAS], int *num_dias) {
     int pacientes_atendidos = 0;
-    *num_semanas = 0;
+    *num_dias = 0;
 
     qsort(pacientes, *num_pacientes - TAM_BANCO, sizeof(Paciente), compararPrioridade); // Exclui os reservados
 
@@ -153,7 +153,7 @@ void alocarConsultas(Paciente pacientes[], int *num_pacientes, Medico medicos[],
                 for (int m = 0; m < num_medicos; m++) {
                     int medico_em_uso = 0;
                     for (int s = 0; s < MAX_SALAS; s++) {
-                        if (strcmp(salas[*num_semanas][s].horarios[hora].medico, medicos[m].nome) == 0) {
+                        if (strcmp(salas[*num_dias][s].horarios[hora].medico, medicos[m].nome) == 0) {
                             medico_em_uso = 1;
                             break;
                         }
@@ -171,21 +171,21 @@ void alocarConsultas(Paciente pacientes[], int *num_pacientes, Medico medicos[],
                          pacientes[pacientes_atendidos].nome,
                          pacientes[pacientes_atendidos].sobrenome);
 
-                strcpy(salas[*num_semanas][sala].horarios[hora].paciente, nome_completo);
-                strcpy(salas[*num_semanas][sala].horarios[hora].medico, medicos[medico_encontrado].nome);
+                strcpy(salas[*num_dias][sala].horarios[hora].paciente, nome_completo);
+                strcpy(salas[*num_dias][sala].horarios[hora].medico, medicos[medico_encontrado].nome);
 
                 medicos[medico_encontrado].horas_trabalhadas++;
                 pacientes_atendidos++;
             }
         }
-        (*num_semanas)++;
+        (*num_dias)++;
     }
 }
 
-void gerenciarFaltasComReservas(Paciente pacientes[], int *num_pacientes, Sala salas[][MAX_SALAS], int semana, int sala, int hora, FILE *arquivo) {
+void gerenciarFaltasComReservas(Paciente pacientes[], int *num_pacientes, Sala salas[][MAX_SALAS], int dia, int sala, int hora, FILE *arquivo) {
     if (rand() % 100 < 5) { // 5% de chance de falta
         char nome_paciente[MAX_NOME * 2];
-        strcpy(nome_paciente, salas[semana][sala].horarios[hora].paciente);
+        strcpy(nome_paciente, salas[dia][sala].horarios[hora].paciente);
 
         for (int i = 0; i < *num_pacientes; i++) {
             char nome_completo[MAX_NOME * 2];
@@ -193,8 +193,8 @@ void gerenciarFaltasComReservas(Paciente pacientes[], int *num_pacientes, Sala s
 
             if (strcmp(nome_completo, nome_paciente) == 0) {
                 // Registrando a falta do paciente
-                fprintf(arquivo, "Semana %d, Sala %d, Horário %d: Paciente '%s' faltou.\n", 
-                        semana + 1, sala + 1, hora + 1, nome_completo);
+                fprintf(arquivo, "Dia %d, Sala %d, Horário %d: Paciente '%s' faltou.\n", 
+                        dia + 1, sala + 1, hora + 1, nome_completo);
 
                 int substituido = 0; // Variável para indicar se houve substituição
                 // Percorre o banco de reservas para encontrar um substituto
@@ -207,7 +207,7 @@ void gerenciarFaltasComReservas(Paciente pacientes[], int *num_pacientes, Sala s
                             fprintf(arquivo, "Substituído por: %s do banco de reservas.\n", nome_completo);
                             
                             // Atualiza o horário da consulta
-                            strcpy(salas[semana][sala].horarios[hora].paciente, nome_completo);
+                            strcpy(salas[dia][sala].horarios[hora].paciente, nome_completo);
 
                             // Atualiza o banco de reservas: retira o substituto e coloca o paciente faltoso no final
                             for (int m = j; m < TAM_BANCO - 1; m++) {
@@ -224,7 +224,7 @@ void gerenciarFaltasComReservas(Paciente pacientes[], int *num_pacientes, Sala s
 
                 if (!substituido) { // Se não houve substituto no banco de reservas
                     fprintf(arquivo, "Não há substituto disponível para o paciente '%s'.\n", nome_completo);
-                    strcpy(salas[semana][sala].horarios[hora].paciente, "Faltou");
+                    strcpy(salas[dia][sala].horarios[hora].paciente, "Faltou");
                 }
                 break;
             }
@@ -232,7 +232,7 @@ void gerenciarFaltasComReservas(Paciente pacientes[], int *num_pacientes, Sala s
     }
 }
 
-void gerarRelatorio(Paciente pacientes[], Medico medicos[], int num_medicos, Sala salas[][MAX_SALAS], int num_semanas) {
+void gerarRelatorio(Paciente pacientes[], Medico medicos[], int num_medicos, Sala salas[][MAX_SALAS], int num_dias) {
     FILE *arquivo = fopen("relatorio.txt", "w");
     if (!arquivo) {
         printf("Erro ao criar o arquivo de relatório.\n");
@@ -247,7 +247,7 @@ void gerarRelatorio(Paciente pacientes[], Medico medicos[], int num_medicos, Sal
     }
 
     // Relatório das consultas
-    for (int i = 0; i < num_semanas; i++) {
+    for (int i = 0; i < num_dias; i++) {
         fprintf(arquivo, "\nDia %d:\n", i + 1);
         for (int j = 0; j < MAX_SALAS; j++) {
             fprintf(arquivo, "Sala %d:\n", j + 1);
@@ -288,31 +288,31 @@ int main() {
     Medico medicos[MAX_SALAS];
     int num_medicos;
 
-    Sala salas[MAX_SEMANAS][MAX_SALAS];
+    Sala salas[MAX_DIAS][MAX_SALAS];
     memset(salas, 0, sizeof(salas));
 
-    int num_semanas;
+    int num_dias;
 
     carregarPacientes(pacientes, &num_pacientes);
     inicializarBancoReservas(pacientes, num_pacientes);
     inicializarMedicos(medicos, &num_medicos);
-    alocarConsultas(pacientes, &num_pacientes, medicos, num_medicos, salas, &num_semanas);
+    alocarConsultas(pacientes, &num_pacientes, medicos, num_medicos, salas, &num_dias);
 
-    FILE *arquivo = fopen("resultado_simulacao.txt", "w");
+    FILE *arquivo = fopen("banco_de_reservas.txt", "w");
     if (!arquivo) {
         printf("Erro ao criar o arquivo de resultado.\n");
         exit(1);
     }
 
-    for (int semana = 0; semana < num_semanas; semana++) {
+    for (int dia = 0; dia < num_dias; dia++) {
         for (int sala = 0; sala < MAX_SALAS; sala++) {
             for (int hora = 0; hora < MAX_HORARIOS; hora++) {
-                gerenciarFaltasComReservas(pacientes, &num_pacientes, salas, semana, sala, hora, arquivo);
+                gerenciarFaltasComReservas(pacientes, &num_pacientes, salas, dia, sala, hora, arquivo);
             }
         }
     }
 
-    gerarRelatorio(pacientes, medicos, num_medicos, salas, num_semanas);
+    gerarRelatorio(pacientes, medicos, num_medicos, salas, num_dias);
     fclose(arquivo);
 
     return 0;
