@@ -116,15 +116,6 @@ int compararPrioridade(const void *a, const void *b) {
     return pacienteA->prioridade - pacienteB->prioridade;
 }
 
-int encontrarPacientePorId(Paciente pacientes[], int num_pacientes, int id) {
-    for (int i = 0; i < num_pacientes; i++) {
-        if (pacientes[i].id == id) {
-            return i;
-        }
-    }
-    return -1;
-}
-
 void alocarConsultas(Paciente pacientes[], int *num_pacientes, Medico medicos[], int num_medicos, Sala salas[][MAX_SALAS], int *num_dias) {
     int pacientes_atendidos = 0;
     *num_dias = 0;
