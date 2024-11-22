@@ -99,18 +99,6 @@ void inicializarBancoReservas(Paciente pacientes[], int num_pacientes) {
     }
 }
 
-void exibirBancoReservas(Paciente pacientes[], int num_pacientes) {
-    printf("\nBanco de Reservas:\n");
-    for (int i = 0; i < TAM_BANCO; i++) {
-        int id = bancoReservas[i];
-        for (int j = 0; j < num_pacientes; j++) {
-            if (pacientes[j].id == id) {
-                printf("Paciente %d: %s %s, ID: %d\n", i + 1, pacientes[j].nome, pacientes[j].sobrenome, id);
-                break;
-            }
-        }
-    }
-}
 void inicializarMedicos(Medico medicos[], int *num_medicos) {
     const char *nomes[] = {"Dr. Vinicius", "Dr. Carlos", "Dr. Pedro", "Dr. Vinera"};
     const char *especialidades[] = {"Clínico Geral", "Cardiologia", "Neurologia", "Pediatria"};
